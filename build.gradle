@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'net.serenity-bdd.serenity-gradle-plugin' version '4.3.2'
+    id 'io.freefair.lombok' version '9.1.0'
+}
+
+group = 'com.jellisisland'
+version = '0.0.1-SNAPSHOT'
+description = 'Template project for test automation'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Serenity BDD - Latest stable: 4.3.2
+    testImplementation 'net.serenity-bdd:serenity-core:4.3.2'
+    testImplementation 'net.serenity-bdd:serenity-cucumber:4.3.2'
+
+    // Cucumber - Latest stable: 7.31.0
+    testImplementation 'io.cucumber:cucumber-java:7.31.0'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.31.0'
+
+    // Selenium WebDriver - Latest stable: 4.38.0
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.38.0'
+
+    // JUnit Platform - Latest stable: 6.0.1 (major version)
+    testImplementation 'org.junit.platform:junit-platform-launcher:6.0.1'
+    testImplementation 'org.junit.platform:junit-platform-suite:6.0.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:6.0.1'
+
+    // Logback for logging - Latest stable: 1.5.20
+    testImplementation 'ch.qos.logback:logback-classic:1.5.20'
+
+    // AssertJ - Latest stable 3.x: 3.27.3 (avoiding 4.0 milestone)
+    testImplementation 'org.assertj:assertj-core:3.27.3'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging.showStandardStreams = true
+    systemProperty "cucumber.junit-platform.naming-strategy", "long"
+}
+
+serenity {
+    reports = ["single-page-html"]
+}

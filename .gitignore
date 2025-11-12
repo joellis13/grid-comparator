@@ -1,0 +1,28 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test Reports
+test-output/
+target/
+
+# Serenity Reports
+serenity-reports/
+
+# Logs
+*.log
+logs/
+
+notes.md
