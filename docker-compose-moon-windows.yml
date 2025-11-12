@@ -1,0 +1,30 @@
+# Docker Compose for Moon on Windows (Docker Desktop)
+# This variant mounts the Windows named pipe so Moon can control the Docker engine from inside the container.
+# Use this on Windows hosts (Docker Desktop). For Linux/macOS use the existing docker-compose-moon.yml which mounts /var/run/docker.sock.
+
+services:
+  moon:
+    image: aerokube/moon:latest
+    container_name: moon
+    ports:
+      - "4444:4444" # WebDriver endpoint
+      - "8080:8080" # Moon UI (if enabled)
+    environment:
+      TZ: UTC
+      MOON_PROVISIONER: docker
+      # Tell Moon to talk to Docker via the socket we mount inside the container
+      DOCKER_HOST: unix:///var/run/docker.sock
+    # Mount Windows named pipe to container's docker socket path
+    volumes:
+      - "//./pipe/docker_engine:/var/run/docker.sock:rw"
+    restart: unless-stopped
+    privileged: true
+    user: "0:0"
+    # Use shell entrypoint so flags are passed via single command string
+    entrypoint: ["/bin/sh","-c"]
+    command: "/moon --provisioner docker --docker-host unix:///var/run/docker.sock --log-level debug"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O-", "http://localhost:4444/status" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10

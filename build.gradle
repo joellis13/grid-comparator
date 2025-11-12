@@ -22,6 +22,8 @@ dependencies {
     // Serenity BDD - Latest stable: 4.3.2
     testImplementation 'net.serenity-bdd:serenity-core:4.3.2'
     testImplementation 'net.serenity-bdd:serenity-cucumber:4.3.2'
+    testImplementation 'net.serenity-bdd:serenity-screenplay:4.3.2'
+    testImplementation 'net.serenity-bdd:serenity-screenplay-webdriver:4.3.2'
 
     // Cucumber - Latest stable: 7.31.0
     testImplementation 'io.cucumber:cucumber-java:7.31.0'

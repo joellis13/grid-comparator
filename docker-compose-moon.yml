@@ -1,0 +1,19 @@
+# Simple Docker Compose to run Moon for POC
+# Note: For production, follow Moon docs to configure proper storage, networking, and resource limits
+
+services:
+  moon:
+    image: aerokube/moon:latest
+    container_name: moon
+    ports:
+      - "4444:4444" # WebDriver endpoint
+      - "8080:8080" # Moon UI (if enabled)
+    environment:
+      TZ: "UTC"
+      MOON_PROVISIONER: "docker"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    # Use shell entrypoint so command string is executed correctly
+    entrypoint: ["/bin/sh","-c"]
+    command: "/moon --provisioner docker --docker-host unix:///var/run/docker.sock --log-level debug"

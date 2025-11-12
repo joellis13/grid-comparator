@@ -6,6 +6,9 @@ import org.junit.platform.suite.api.IncludeEngines;
 import org.junit.platform.suite.api.SelectClasspathResource;
 import org.junit.platform.suite.api.Suite;
 
+// Ensure WebDriver mode is configured before Serenity initializes drivers
+import com.jellisisland.test.automation.template.util.WebDriverModeConfigurator;
+
 @Suite
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
@@ -16,4 +19,9 @@ import org.junit.platform.suite.api.Suite;
 @ConfigurationParameter(key = Constants.FILTER_TAGS_PROPERTY_NAME, value = "")
 @ConfigurationParameter(key = Constants.FEATURES_PROPERTY_NAME, value = "src/test/resources/features")
 public class CucumberTestRunner {
+
+    static {
+        // Force init of configurator
+        WebDriverModeConfigurator.init();
+    }
 }

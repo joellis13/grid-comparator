@@ -1,0 +1,20 @@
+# Docker Compose for Moon on Windows using Docker Desktop TCP daemon (insecure)
+# This approach avoids mounting the Windows named pipe into the container.
+# WARNING: Exposing Docker daemon over TCP without TLS is insecure and only recommended for local POCs.
+
+services:
+  moon:
+    image: aerokube/moon:latest
+    container_name: moon
+    ports:
+      - "4444:4444"
+      - "8080:8080"
+    environment:
+      TZ: UTC
+      MOON_PROVISIONER: docker
+      # Tell Moon to use the host Docker daemon exposed via Docker Desktop's "Expose daemon on tcp://localhost:2375" setting
+      DOCKER_HOST: tcp://host.docker.internal:2375
+    restart: unless-stopped
+    # Use a single-string command so Compose on Windows doesn't try to execute array elements as executables
+    # Let the image default entrypoint (/moon) run and pass flags as a single string
+    command: "/moon --provisioner docker --docker-host tcp://host.docker.internal:2375 --log-level debug"

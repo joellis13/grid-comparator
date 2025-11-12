@@ -1,0 +1,27 @@
+# Docker Compose for Moon on a Linux host or Linux VM/Server
+# This is the simplest setup for a Moon POC: mount the Docker socket directly
+# so Moon can create browser containers. Works reliably on Linux (or a Linux VM).
+
+services:
+  moon:
+    image: aerokube/moon:latest
+    container_name: moon
+    ports:
+      - "4444:4444"
+      - "8080:8080"
+    volumes:
+      # Mount host Docker socket so Moon can control Docker locally
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      TZ: UTC
+      MOON_PROVISIONER: docker
+    restart: unless-stopped
+    # Run Moon with docker provisioner pointing at the unix socket
+    command: "/moon --provisioner docker --docker-host unix:///var/run/docker.sock --log-level debug"
+
+# Usage on a Linux host or VM:
+# 1) docker compose -f docker-compose-moon-linux.yml up -d
+# 2) docker ps -a --filter name=moon
+# 3) docker compose -f docker-compose-moon-linux.yml logs --tail 200 moon
+# 4) curl -sS http://localhost:4444/status | jq
+
