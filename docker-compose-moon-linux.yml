@@ -12,6 +12,9 @@ services:
     volumes:
       # Mount host Docker socket so Moon can control Docker locally
       - /var/run/docker.sock:/var/run/docker.sock
+      # Provide timezone data to the container so Go's time zone lookup succeeds
+      - /etc/localtime:/etc/localtime:ro
+      - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
     environment:
       TZ: UTC
       MOON_PROVISIONER: docker
