@@ -16,6 +16,7 @@ services:
       TZ: UTC
       MOON_PROVISIONER: docker
     restart: unless-stopped
+    user: "0:0"
     # Run Moon with docker provisioner pointing at the unix socket
     command: "/moon --provisioner docker --docker-host unix:///var/run/docker.sock --log-level debug"
 
@@ -24,4 +25,3 @@ services:
 # 2) docker ps -a --filter name=moon
 # 3) docker compose -f docker-compose-moon-linux.yml logs --tail 200 moon
 # 4) curl -sS http://localhost:4444/status | jq
-
